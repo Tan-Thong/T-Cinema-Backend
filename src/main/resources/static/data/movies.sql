@@ -50,8 +50,6 @@ VALUES (
 	 "https://www.youtube.com/embed/1pHDWnXmK7Y?si=0jJjHFXERKlwjnmk",
     8.6
 );
-
-=====================================================================================================================================
 INSERT INTO movies (title, country, director, duration, release_date, movie_description, thumbnail_url, banner_url, trailer_url, rate)
 VALUES (
     "Nàng Bạch Tuyết", 

@@ -16,8 +16,10 @@ public class Seat {
     @Column(name = "seat_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int seatId;
-    @Column(name = "seat_number")
-    private String seatNumber;
+    @Column(name = "seat_row")
+    private char seatRow;
+    @Column(name = "seat_column")
+    private int seatColumn;
     @Column(name = "seat_type")
     @Enumerated(EnumType.STRING)
     private SeatType seatType;
