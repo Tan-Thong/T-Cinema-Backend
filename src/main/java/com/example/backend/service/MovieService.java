@@ -16,6 +16,10 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+    public Movie findById(int movieId) {
+        return movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not exists!"));
+    }
+
     public List<Movie> findByIdNot(int movieId) {
         return movieRepository.findByMovieIdNot(movieId);
     }
@@ -28,7 +32,7 @@ public class MovieService {
         return movieRepository.findShowingMovies();
     }
 
-    public Movie findById(int movieId) {
-        return movieRepository.findById(movieId).get();
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
     }
 }
