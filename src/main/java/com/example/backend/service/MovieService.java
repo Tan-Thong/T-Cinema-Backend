@@ -1,6 +1,10 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.request.MovieCreationRequest;
 import com.example.backend.entity.Movie;
+import com.example.backend.exception.AppException;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.mapper.MovieMapper;
 import com.example.backend.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +16,15 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private MovieMapper movieMapper;
+
     public List<Movie> findAll() {
         return movieRepository.findAll();
     }
 
     public Movie findById(int movieId) {
-        return movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not exists!"));
+        return movieRepository.findById(movieId).orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
     }
 
     public List<Movie> findByIdNot(int movieId) {
@@ -32,7 +39,8 @@ public class MovieService {
         return movieRepository.findShowingMovies();
     }
 
-    public Movie createMovie(Movie movie) {
+    public Movie createMovie(MovieCreationRequest request) {
+        Movie movie = movieMapper.toMovie(request);
         return movieRepository.save(movie);
     }
 }

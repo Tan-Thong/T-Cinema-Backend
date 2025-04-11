@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.DTO.ShowtimeDTOv2;
-import com.example.backend.DTO.ShowtimeDTOv1;
+import com.example.backend.dto.ShowtimeDTOv2;
+import com.example.backend.dto.ShowtimeDTOv1;
 import com.example.backend.entity.Showtime;
 import com.example.backend.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
