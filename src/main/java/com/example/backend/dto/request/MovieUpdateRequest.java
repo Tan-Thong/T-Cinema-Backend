@@ -10,7 +10,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MovieCreationRequest {
+public class MovieUpdateRequest {
     String title;
     String trailerUrl;
     String thumbnailUrl;

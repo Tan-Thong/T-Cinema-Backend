@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.request.MovieCreationRequest;
+import com.example.backend.dto.request.MovieUpdateRequest;
 import com.example.backend.entity.Movie;
 import com.example.backend.exception.AppException;
 import com.example.backend.exception.ErrorCode;
@@ -19,12 +20,23 @@ public class MovieService {
     @Autowired
     private MovieMapper movieMapper;
 
-    public List<Movie> findAll() {
+    public List<Movie> getMovies() {
         return movieRepository.findAll();
     }
 
-    public Movie findById(int movieId) {
+    public Movie getMovie(int movieId) {
         return movieRepository.findById(movieId).orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
+    }
+
+    public Movie createMovie(MovieCreationRequest request) {
+        Movie movie = movieMapper.createMovie(request);
+        return movieRepository.save(movie);
+    }
+
+    public Movie updateMovie(int movieId, MovieUpdateRequest request) {
+        Movie movie = getMovie(movieId);
+        movieMapper.updateMovie(movie, request);
+        return movieRepository.save(movie);
     }
 
     public List<Movie> findByIdNot(int movieId) {
@@ -37,10 +49,5 @@ public class MovieService {
 
     public List<Movie> findShowingMovies() {
         return movieRepository.findShowingMovies();
-    }
-
-    public Movie createMovie(MovieCreationRequest request) {
-        Movie movie = movieMapper.toMovie(request);
-        return movieRepository.save(movie);
     }
 }
