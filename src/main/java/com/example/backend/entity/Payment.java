@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.example.backend.enums.PaymentMethod;
+import com.example.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

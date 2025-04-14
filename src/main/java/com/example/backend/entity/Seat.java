@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.example.backend.enums.SeatStatus;
+import com.example.backend.enums.SeatType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;

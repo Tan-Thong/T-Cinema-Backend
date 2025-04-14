@@ -6,11 +6,14 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @Column(name = "user_id")
@@ -21,10 +24,7 @@ public class User {
     private String password;
     private String email;
     private String phone;
-
+    private Set<String> roles;
     @ColumnDefault("0")
     private boolean active;
-
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Role> roles;
 }
