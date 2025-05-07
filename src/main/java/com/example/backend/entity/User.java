@@ -19,11 +19,8 @@ public class User {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
-    @Column(name = "user_name")
-    private String userName;
     private String password;
     private String email;
-    private String phone;
     private Set<String> roles;
     @ColumnDefault("0")
     private boolean active;

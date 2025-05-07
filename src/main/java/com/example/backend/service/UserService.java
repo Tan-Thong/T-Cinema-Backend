@@ -29,7 +29,7 @@ public class UserService {
 
     public UserResponse createUser (UserCreationRequest request) {
         User user = userMapper.toUser(request);
-        if(userRepository.existsByUserName(user.getUserName()))
+        if(userRepository.existsByEmail(user.getEmail()))
             throw new RuntimeException("User đã tồn tại!");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 

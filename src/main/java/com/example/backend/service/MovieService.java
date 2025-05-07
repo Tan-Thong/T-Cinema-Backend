@@ -33,6 +33,10 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
+    public void deleteMovie(int movieId) {
+        movieRepository.delete(movieRepository.findById(movieId).orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED)));
+    }
+
     public Movie updateMovie(int movieId, MovieUpdateRequest request) {
         Movie movie = getMovie(movieId);
         movieMapper.updateMovie(movie, request);

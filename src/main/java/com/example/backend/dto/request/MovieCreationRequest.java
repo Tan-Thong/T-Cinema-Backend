@@ -3,7 +3,7 @@ package com.example.backend.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -15,7 +15,7 @@ public class MovieCreationRequest {
     String trailerUrl;
     String thumbnailUrl;
     String bannerUrl;
-    Date releaseDate;
+    LocalDate releaseDate;
     int duration;
     double rate;
     String country;
