@@ -6,6 +6,7 @@ import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.entity.Movie;
 import com.example.backend.service.FileService;
 import com.example.backend.service.MovieService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,19 @@ public class MovieController {
         return apiResponse;
     }
 
-    @PostMapping("movies/{id}")
-    public ApiResponse<Movie> updateMovie(@PathVariable("id") int movieId, @RequestBody MovieUpdateRequest request) {
+    @PutMapping("movies/{id}")
+    public ApiResponse<Movie> updateMovie(
+            @PathVariable("id") int movieId,
+            @RequestPart("data") @Valid MovieUpdateRequest request,
+            @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+            @RequestPart(value = "banner", required = false) MultipartFile banner) {
+
+        String thumbnailPath = fileService.saveFile(thumbnail, "thumbnails");
+        String bannerPath = fileService.saveFile(banner, "banners");
+
+        request.setThumbnailUrl(thumbnailPath);
+        request.setBannerUrl(bannerPath);
+
         ApiResponse<Movie> apiResponse = new ApiResponse<>();
         apiResponse.setResult(movieService.updateMovie(movieId, request));
         return apiResponse;
@@ -49,7 +61,7 @@ public class MovieController {
 
     @PostMapping(value = "/movies", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Movie> createMovie(
-            @RequestPart("data") MovieCreationRequest request,
+            @RequestPart("data") @Valid MovieCreationRequest request,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
             @RequestPart(value = "banner", required = false) MultipartFile banner
     ) {

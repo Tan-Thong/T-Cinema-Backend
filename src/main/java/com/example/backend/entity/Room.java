@@ -17,8 +17,12 @@ public class Room {
     private int roomId;
     @Column(name = "room_name")
     private String roomName;
-    @Column(name = "seat_capacity")
-    private int seatCapacity;
+    @Column(name = "room_row")
+    private int row;
+    @Column(name = "room_column")
+    private int column;
+    @Column(name = "room_type")
+    private int roomType;
 
     @ManyToOne()
     @JoinColumn(name = "cinema_id")
