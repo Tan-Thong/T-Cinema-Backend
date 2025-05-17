@@ -16,4 +16,26 @@ public class SeatService {
     public List<Seat> findAllSeats() {
         return seatRepository.findAll();
     }
+
+    public Seat getSeat(int seatId) {
+        return seatRepository.findById(seatId).orElseThrow(()->new RuntimeException("Ghế không tồn tại!"));
+    }
+
+    public Seat createSeat(Seat seat) {
+        return seatRepository.save(seat);
+    }
+
+    public Seat updateSeat(int seatId, Seat seatRequest) {
+        Seat seat = seatRepository.findById(seatId).orElseThrow(()->new RuntimeException("Ghế không tồn tại!"));
+        seat.setSeatRow(seatRequest.getSeatRow());
+        seat.setSeatColumn(seatRequest.getSeatColumn());
+        seat.setSeatType(seatRequest.getSeatType());
+        seat.setStatus(seatRequest.getStatus());
+        seat.setRoom(seat.getRoom());
+        return seatRepository.save(seat);
+    }
+
+    public void deleteSeat(int seatId) {
+        seatRepository.delete(seatRepository.findById(seatId).orElseThrow(()->new RuntimeException("Ghế không tồn tại!")));
+    }
 }

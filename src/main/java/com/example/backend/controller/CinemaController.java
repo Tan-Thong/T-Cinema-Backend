@@ -3,8 +3,10 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.CinemaRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.CinemaResponse;
+import com.example.backend.dto.response.RoomResponse;
 import com.example.backend.entity.Cinema;
 import com.example.backend.service.CinemaService;
+import com.example.backend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,19 @@ import java.util.List;
 public class CinemaController {
     @Autowired
     private CinemaService cinemaService;
+    @Autowired
+    private RoomService roomService;
 
     @GetMapping()
     public ResponseEntity<List<Cinema>> findAll() {
         return ResponseEntity.ok(cinemaService.getCinemas());
+    }
+
+    @GetMapping("/{cinemaId}/rooms")
+    public ApiResponse<List<RoomResponse>> getRooms(@PathVariable int cinemaId) {
+        ApiResponse<List<RoomResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(roomService.getRoomsByCinemaId(cinemaId));
+        return apiResponse;
     }
 
     @PostMapping()

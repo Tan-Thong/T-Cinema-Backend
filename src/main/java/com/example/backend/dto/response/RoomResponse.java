@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 public class RoomResponse {
     int roomId;
     String roomName;
-    int cinemaId;
+    CinemaResponse cinema;
     int row;
     int column;
-    int roomType;
+    String roomType;
 }

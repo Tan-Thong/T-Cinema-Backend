@@ -22,14 +22,13 @@ public class Room {
     @Column(name = "room_column")
     private int column;
     @Column(name = "room_type")
-    private int roomType;
+    private String roomType;
 
     @ManyToOne()
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 
-    @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "seat_id") )
+    @OneToMany(mappedBy = "room")
     private List<Seat> seats;
 
     @OneToMany(mappedBy = "room")

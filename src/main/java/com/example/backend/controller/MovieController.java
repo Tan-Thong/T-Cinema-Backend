@@ -3,9 +3,11 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.MovieCreationRequest;
 import com.example.backend.dto.request.MovieUpdateRequest;
 import com.example.backend.dto.response.ApiResponse;
+import com.example.backend.dto.response.ShowtimeResponse;
 import com.example.backend.entity.Movie;
 import com.example.backend.service.FileService;
 import com.example.backend.service.MovieService;
+import com.example.backend.service.ShowtimeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,25 +18,30 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@RequestMapping("/movies")
 public class MovieController {
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private ShowtimeService showtimeService;
+
     @Autowired
     private FileService fileService;
 
-    @GetMapping("movies")
+    @GetMapping("")
     public ResponseEntity<List<Movie>> getMovies() {
         return ResponseEntity.ok(movieService.getMovies());
     }
 
-    @GetMapping("movies/{id}")
+    @GetMapping("/{id}")
     public ApiResponse<Movie> getMovie(@PathVariable("id") int movieId) {
         ApiResponse<Movie> apiResponse = new ApiResponse<>();
         apiResponse.setResult(movieService.getMovie(movieId));
         return apiResponse;
     }
 
-    @PutMapping("movies/{id}")
+    @PutMapping("/{id}")
     public ApiResponse<Movie> updateMovie(
             @PathVariable("id") int movieId,
             @RequestPart("data") @Valid MovieUpdateRequest request,
@@ -52,14 +59,14 @@ public class MovieController {
         return apiResponse;
     }
 
-    @DeleteMapping("movies/{id}")
+    @DeleteMapping("/{id}")
     public ApiResponse<String> deleteMovie(@PathVariable("id") int movieId) {
         ApiResponse<String> apiResponse = new ApiResponse<>();
         movieService.deleteMovie(movieId);
         return apiResponse;
     }
 
-    @PostMapping(value = "/movies", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Movie> createMovie(
             @RequestPart("data") @Valid MovieCreationRequest request,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
@@ -77,18 +84,25 @@ public class MovieController {
     }
 
 
-    @GetMapping("movies/not/{id}")
+    @GetMapping("/not/{id}")
     public ResponseEntity<List<Movie>> getByIdNot(@PathVariable("id") int movieId) {
         return ResponseEntity.ok(movieService.findByIdNot(movieId));
     }
 
-    @GetMapping("movies/upcoming")
+    @GetMapping("/upcoming")
     public ResponseEntity<List<Movie>> getUpcomingMovies() {
         return ResponseEntity.ok(movieService.findUpcomingMovies());
     }
 
-    @GetMapping("movies/showing")
+    @GetMapping("/showing")
     public ResponseEntity<List<Movie>> getShowingMovies() {
         return ResponseEntity.ok(movieService.findShowingMovies());
+    }
+
+    @GetMapping("/{id}/showtimes")
+    public ApiResponse<List<ShowtimeResponse>> findByMovieAndDate(@PathVariable("id") int movieId, @RequestParam String showDate) {
+        ApiResponse<List<ShowtimeResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(showtimeService.getShowtimesByMovieAndDate(movieId, showDate));
+        return apiResponse;
     }
 }

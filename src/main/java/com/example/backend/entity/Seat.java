@@ -4,6 +4,7 @@ import com.example.backend.enums.SeatStatus;
 import com.example.backend.enums.SeatType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "seats")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Seat {
     @Id
     @Column(name = "seat_id")
@@ -30,11 +32,20 @@ public class Seat {
     private SeatStatus status;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "seats")
-    private List<Room> rooms;
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
 
     @JsonIgnore
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "seat_id"), inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private List<Ticket> tickets;
+
+    public Seat(char seatRow, int seatColumn, SeatType seatType, SeatStatus status, Room room) {
+        this.seatRow = seatRow;
+        this.seatColumn = seatColumn;
+        this.seatType = seatType;
+        this.status = status;
+        this.room = room;
+    }
 }

@@ -22,6 +22,13 @@ public class RoomController {
         return apiResponse;
     }
 
+    @GetMapping("/{id}")
+    public ApiResponse<RoomResponse> getRooms(@PathVariable("id") int roomId) {
+        ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(roomService.getRoom(roomId));
+        return apiResponse;
+    }
+
     @PostMapping()
     public ApiResponse<RoomResponse> createRoom(@RequestBody RoomRequest roomRequest) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
