@@ -42,6 +42,16 @@ public class ShowtimeService {
         return showtimeMapper.toShowtimeResponse(showtimeRepository.save(showtime));
     }
 
+    public ShowtimeResponse updateShowtime(int showtimeId, ShowtimeRequest showtimeRequest) {
+        Showtime showtime = showtimeRepository.findById(showtimeId).orElseThrow(() -> new RuntimeException("Suât chiếu không tồn tại!"));
+        showtimeMapper.updateShowtime(showtime, showtimeRequest);
+        Movie movie = movieRepository.findById(showtimeRequest.getMovieId()).orElseThrow(() -> new RuntimeException("Phim không tồn tại!"));
+        Room room = roomRepository.findById(showtimeRequest.getRoomId()).orElseThrow(() -> new RuntimeException("Phòng không tồn tại!"));
+        showtime.setMovie(movie);
+        showtime.setRoom(room);
+        return showtimeMapper.toShowtimeResponse(showtimeRepository.save(showtime));
+    }
+
     public List<ShowtimeResponse> getShowtimes() {
         return showtimeMapper.toShowtimesResponse(showtimeRepository.findAll());
     }

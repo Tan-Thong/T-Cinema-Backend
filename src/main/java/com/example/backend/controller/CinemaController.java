@@ -9,6 +9,7 @@ import com.example.backend.service.CinemaService;
 import com.example.backend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CinemaController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<CinemaResponse> createCinema(@RequestBody CinemaRequest cinemaRequest) {
         ApiResponse<CinemaResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(cinemaService.createCinema(cinemaRequest));
@@ -41,6 +43,7 @@ public class CinemaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<CinemaResponse> updateCinema(@PathVariable("id") int cinemaId, @RequestBody CinemaRequest cinemaRequest) {
         ApiResponse<CinemaResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(cinemaService.updateCinema(cinemaId, cinemaRequest));
@@ -48,6 +51,7 @@ public class CinemaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<CinemaResponse> deleteCinema(@PathVariable("id") int cinemaId) {
         ApiResponse<CinemaResponse> apiResponse = new ApiResponse<>();
         cinemaService.deleteCinema(cinemaId);

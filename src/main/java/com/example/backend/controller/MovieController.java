@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +43,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<Movie> updateMovie(
             @PathVariable("id") int movieId,
             @RequestPart("data") @Valid MovieUpdateRequest request,
@@ -60,6 +62,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<String> deleteMovie(@PathVariable("id") int movieId) {
         ApiResponse<String> apiResponse = new ApiResponse<>();
         movieService.deleteMovie(movieId);
@@ -67,6 +70,7 @@ public class MovieController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<Movie> createMovie(
             @RequestPart("data") @Valid MovieCreationRequest request,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,

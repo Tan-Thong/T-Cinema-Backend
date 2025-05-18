@@ -6,6 +6,7 @@ import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.UserResponse;
 import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<List<UserResponse>> getUsers() {
         ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.getUsers());
@@ -36,7 +38,8 @@ public class UserController {
         return apiResponse;
     }
 
-    @PostMapping("/users/{id}")
+    @PutMapping("/users/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<UserResponse> createUser(@PathVariable("id") int userId, @RequestBody UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.updateUser(userId, request));

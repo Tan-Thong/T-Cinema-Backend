@@ -5,6 +5,7 @@ import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.RoomResponse;
 import com.example.backend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class RoomController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<RoomResponse> createRoom(@RequestBody RoomRequest roomRequest) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(roomService.createRoom(roomRequest));
@@ -37,6 +39,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<RoomResponse> updateRoom(@PathVariable("id") int roomId,@RequestBody RoomRequest roomRequest) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(roomService.updateRoom(roomId, roomRequest));
@@ -44,6 +47,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<RoomResponse> deleteCinema(@PathVariable("id") int roomId) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         roomService.deleteRoom(roomId);
