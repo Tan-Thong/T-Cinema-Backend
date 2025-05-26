@@ -3,7 +3,10 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.RoomRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.RoomResponse;
+import com.example.backend.dto.response.SeatResponse;
+import com.example.backend.mapper.SeatMapper;
 import com.example.backend.service.RoomService;
+import com.example.backend.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,12 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private SeatService seatService;
+
+    @Autowired
+    private SeatMapper seatMapper;
+
     @GetMapping()
     public ApiResponse<List<RoomResponse>> getRooms() {
         ApiResponse<List<RoomResponse>> apiResponse = new ApiResponse<>();
@@ -27,6 +36,14 @@ public class RoomController {
     public ApiResponse<RoomResponse> getRooms(@PathVariable("id") int roomId) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(roomService.getRoom(roomId));
+        return apiResponse;
+    }
+
+    @GetMapping("/{id}/seats")
+    public ApiResponse<List<SeatResponse>> getSeatsByRoomId(@PathVariable("id") int roomId) {
+        ApiResponse<List<SeatResponse>> apiResponse = new ApiResponse<>();
+        List<SeatResponse> seatResponses = seatService.getSeatsByRoomId(roomId);
+        apiResponse.setResult(seatResponses);
         return apiResponse;
     }
 

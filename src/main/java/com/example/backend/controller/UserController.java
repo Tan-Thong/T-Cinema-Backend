@@ -31,6 +31,13 @@ public class UserController {
         return apiResponse;
     }
 
+    @GetMapping("/users/myInfo")
+    public ApiResponse<UserResponse> getMyInfo() {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getMyInfo());
+        return apiResponse;
+    }
+
     @PostMapping("/users")
     public ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();

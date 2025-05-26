@@ -34,4 +34,7 @@ public class Showtime {
     @JsonIgnore
     @OneToMany(mappedBy = "showtime")
     private List<Ticket> tickets;
+
+//    @OneToMany(mappedBy = "showtime")
+//    private List<SeatShowtime> seatShowtimes;
 }

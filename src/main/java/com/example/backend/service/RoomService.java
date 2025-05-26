@@ -54,7 +54,6 @@ public class RoomService {
                 Seat seat = new Seat();
                 seat.setSeatRow(row);
                 seat.setSeatColumn(j+1);
-                seat.setStatus(SeatStatus.AVAILABLE);
                 seat.setRoom(room);
                 if(i < 3) {
                     seat.setSeatType(SeatType.STANDARD);

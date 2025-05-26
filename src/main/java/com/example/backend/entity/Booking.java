@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -18,10 +19,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingId;
     @Column(name = "booking_date")
-    private Date bookingDate;
+    private LocalDate bookingDate;
     @Column(name = "total_price")
     private Double totalPrice;
-    private Status status;
 
     @OneToMany(mappedBy = "booking")
     private List<Ticket> tickets;
@@ -29,4 +29,8 @@ public class Booking {
     @OneToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 }

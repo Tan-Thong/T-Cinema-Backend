@@ -7,6 +7,7 @@ import com.example.backend.enums.Role;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,13 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User không tồn tại!"));
         userMapper.updateUser(user, request);
         return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    public UserResponse getMyInfo() {
+        var context  = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() ->new RuntimeException("Username không tồn tại!"));
+        return userMapper.toUserResponse(user);
     }
 
     public UserResponse getUser(int userId) {

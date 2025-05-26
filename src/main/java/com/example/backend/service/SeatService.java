@@ -1,6 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.response.RoomResponse;
+import com.example.backend.dto.response.SeatResponse;
 import com.example.backend.entity.Seat;
+import com.example.backend.mapper.SeatMapper;
 import com.example.backend.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,8 +16,11 @@ public class SeatService {
     @Autowired
     private SeatRepository seatRepository;
 
-    public List<Seat> findAllSeats() {
-        return seatRepository.findAll();
+    @Autowired
+    private SeatMapper seatMapper;
+
+    public List<SeatResponse> getSeats() {
+        return seatMapper.toSeatsResponse(seatRepository.findAll());
     }
 
     public Seat getSeat(int seatId) {
@@ -30,12 +36,15 @@ public class SeatService {
         seat.setSeatRow(seatRequest.getSeatRow());
         seat.setSeatColumn(seatRequest.getSeatColumn());
         seat.setSeatType(seatRequest.getSeatType());
-        seat.setStatus(seatRequest.getStatus());
         seat.setRoom(seat.getRoom());
         return seatRepository.save(seat);
     }
 
     public void deleteSeat(int seatId) {
         seatRepository.delete(seatRepository.findById(seatId).orElseThrow(()->new RuntimeException("Ghế không tồn tại!")));
+    }
+
+    public List<SeatResponse> getSeatsByRoomId(int roomId) {
+        return seatMapper.toSeatsResponse(seatRepository.findByRoom_RoomId(roomId));
     }
 }

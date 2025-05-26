@@ -27,9 +27,6 @@ public class Seat {
     @Column(name = "seat_type")
     @Enumerated(EnumType.STRING)
     private SeatType seatType;
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private SeatStatus status;
 
     @JsonIgnore
     @ManyToOne
@@ -37,15 +34,18 @@ public class Seat {
     private Room room;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "seat_id"), inverseJoinColumns = @JoinColumn(name = "ticket_id"))
-    private List<Ticket> tickets;
+    @OneToOne(mappedBy = "seat")
+    private Ticket ticket;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "seat")
+//    private List<SeatShowtime> seatShowtimes;
+
 
     public Seat(char seatRow, int seatColumn, SeatType seatType, SeatStatus status, Room room) {
         this.seatRow = seatRow;
         this.seatColumn = seatColumn;
         this.seatType = seatType;
-        this.status = status;
         this.room = room;
     }
 }

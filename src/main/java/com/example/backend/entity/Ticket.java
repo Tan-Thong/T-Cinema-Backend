@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,14 @@ public class Ticket {
     @Column(name = "ticket_price")
     private Double ticketPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "showtime_id")
     private Showtime showtime;
 
-    @ManyToMany(mappedBy = "tickets")
-    private List<Seat> seats;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
 
     @ManyToOne
     @JoinColumn(name = "booking_id")

@@ -2,13 +2,10 @@ package com.example.backend.service;
 
 import com.example.backend.dto.request.ShowtimeRequest;
 import com.example.backend.dto.response.ShowtimeResponse;
-import com.example.backend.entity.Movie;
-import com.example.backend.entity.Room;
-import com.example.backend.entity.Showtime;
+import com.example.backend.entity.*;
+import com.example.backend.enums.SeatStatus;
 import com.example.backend.mapper.ShowtimeMapper;
-import com.example.backend.repository.MovieRepository;
-import com.example.backend.repository.RoomRepository;
-import com.example.backend.repository.ShowtimeRepository;
+import com.example.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +24,12 @@ public class ShowtimeService {
     private MovieRepository movieRepository;
 
     @Autowired
+    private SeatRepository seatRepository;
+
+    @Autowired
+    private SeatShowtimeRepository seatShowtimeRepository;
+
+    @Autowired
     private ShowtimeMapper showtimeMapper;
 
     public List<ShowtimeResponse> getShowtimesByMovieAndDate(int movieId, String showDate) {
@@ -35,12 +38,31 @@ public class ShowtimeService {
 
     public ShowtimeResponse createShowtime(ShowtimeRequest showtimeRequest) {
         Showtime showtime = showtimeMapper.toShowtime(showtimeRequest);
-        Movie movie = movieRepository.findById(showtimeRequest.getMovieId()).orElseThrow(() -> new RuntimeException("Phim không tồn tại!"));
-        Room room = roomRepository.findById(showtimeRequest.getRoomId()).orElseThrow(() -> new RuntimeException("Phòng không tồn tại!"));
+
+        Movie movie = movieRepository.findById(showtimeRequest.getMovieId())
+                .orElseThrow(() -> new RuntimeException("Phim không tồn tại!"));
+        Room room = roomRepository.findById(showtimeRequest.getRoomId())
+                .orElseThrow(() -> new RuntimeException("Phòng không tồn tại!"));
+
         showtime.setMovie(movie);
         showtime.setRoom(room);
-        return showtimeMapper.toShowtimeResponse(showtimeRepository.save(showtime));
+
+        // Lưu và nhận lại đối tượng đã lưu (có ID)
+        Showtime savedShowtime = showtimeRepository.save(showtime);
+        List<Seat> seats = seatRepository.findByRoom_RoomId(room.getRoomId());
+        System.out.println(room.getRoomId());
+
+        for (Seat seat : seats) {
+            SeatShowtime seatShowtime = new SeatShowtime();
+            SeatShowtimeId seatShowtimeId = new SeatShowtimeId(seat.getSeatId(), savedShowtime.getShowtimeId());
+            seatShowtime.setId(seatShowtimeId);
+            seatShowtime.setSeatStatus(SeatStatus.AVAILABLE);
+            seatShowtimeRepository.save(seatShowtime);
+        }
+
+        return showtimeMapper.toShowtimeResponse(savedShowtime);
     }
+
 
     public ShowtimeResponse updateShowtime(int showtimeId, ShowtimeRequest showtimeRequest) {
         Showtime showtime = showtimeRepository.findById(showtimeId).orElseThrow(() -> new RuntimeException("Suât chiếu không tồn tại!"));
