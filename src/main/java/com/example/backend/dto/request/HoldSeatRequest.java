@@ -1,20 +1,18 @@
 package com.example.backend.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookingRequest {
-    String userId;
+public class HoldSeatRequest {
     int showtimeId;
-    List<Integer> seatIds;
-    double totalPrice;
-    String paymentMethod;
+    int seatId;
 }

@@ -27,7 +27,7 @@ public class User {
     private String password;
     private String email;
     private Set<String> roles;
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     private boolean active;
 
     @JsonIgnore

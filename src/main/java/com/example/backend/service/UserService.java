@@ -1,10 +1,13 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.request.UserCreationRequest;
+import com.example.backend.dto.response.BookingResponse;
 import com.example.backend.dto.response.UserResponse;
 import com.example.backend.entity.User;
 import com.example.backend.enums.Role;
+import com.example.backend.mapper.BookingMapper;
 import com.example.backend.mapper.UserMapper;
+import com.example.backend.repository.BookingRepository;
 import com.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +30,12 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private BookingMapper bookingMapper;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     public UserResponse createUser (UserCreationRequest request) {
         User user = userMapper.toUser(request);
@@ -64,5 +73,9 @@ public class UserService {
 
     public List<UserResponse> getUsers() {
         return userMapper.toUsersResponse(userRepository.findAll());
+    }
+
+    public List<BookingResponse> getBookingsByUserId(int userId) {
+        return bookingMapper.toBookingsResponse(bookingRepository.findByUser_UserId(userId));
     }
 }

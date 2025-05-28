@@ -1,13 +1,12 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.request.HoldSeatRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.SeatShowtimeResponse;
 import com.example.backend.entity.SeatShowtime;
 import com.example.backend.service.SeatShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,4 +23,16 @@ public class SeatShowtimeController {
         return apiResponse;
     }
 
+    @GetMapping("/{showtimeId}/seats")
+    public ApiResponse<List<SeatShowtimeResponse>> getSeatsByShowtimeId(@PathVariable("showtimeId") int showtimeId) {
+        ApiResponse<List<SeatShowtimeResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(seatShowtimeService.getSeatsByShowtimeId(showtimeId));
+        return apiResponse;
+    }
+
+    @PostMapping("/hold")
+    public void holdSeats(@RequestBody HoldSeatRequest holdSeatRequest) {
+        System.out.println(holdSeatRequest);
+        seatShowtimeService.holdSeats(holdSeatRequest);
+    }
 }

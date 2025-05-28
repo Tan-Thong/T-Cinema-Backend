@@ -7,6 +7,7 @@ import com.example.backend.dto.response.SeatResponse;
 import com.example.backend.mapper.SeatMapper;
 import com.example.backend.service.RoomService;
 import com.example.backend.service.SeatService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class RoomController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<RoomResponse> createRoom(@RequestBody RoomRequest roomRequest) {
+    public ApiResponse<RoomResponse> createRoom(@RequestBody @Valid RoomRequest roomRequest) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(roomService.createRoom(roomRequest));
         return apiResponse;
@@ -57,7 +58,7 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<RoomResponse> updateRoom(@PathVariable("id") int roomId,@RequestBody RoomRequest roomRequest) {
+    public ApiResponse<RoomResponse> updateRoom(@PathVariable("id") int roomId,@RequestBody @Valid RoomRequest roomRequest) {
         ApiResponse<RoomResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(roomService.updateRoom(roomId, roomRequest));
         return apiResponse;

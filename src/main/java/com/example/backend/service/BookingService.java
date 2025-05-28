@@ -7,6 +7,7 @@ import com.example.backend.enums.SeatStatus;
 import com.example.backend.enums.SeatType;
 import com.example.backend.mapper.BookingMapper;
 import com.example.backend.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,12 @@ public class BookingService {
     @Autowired
     private BookingMapper bookingMapper;
 
+    @Transactional
     public Booking createBooking(BookingRequest bookingRequest) {
+        if (bookingRequest.getSeatIds() == null || bookingRequest.getSeatIds().isEmpty()) {
+            throw new RuntimeException("Bạn phải chọn ít nhất một ghế để đặt vé.");
+        }
+
         Booking booking = new Booking();
         booking.setBookingDate(LocalDate.now());
         booking.setUser(userRepository.findByEmail(bookingRequest.getUserId()).orElseThrow(()->new RuntimeException("User không tồn tại!")));
@@ -43,7 +49,7 @@ public class BookingService {
             ticket.setBooking(booking);
             Seat seat = seatRepository.findById(bookingRequest.getSeatIds().get(i)).orElseThrow(()->new RuntimeException("Ghế không tồn tại!"));
             ticket.setSeat(seat);
-            ticket.setTicketPrice(seat.getSeatType() == SeatType.STANDARD ? 80000.0 : 120000.0 );
+            ticket.setTicketPrice(seat.getSeatType() == SeatType.STANDARD ? 80000.0 : 100000.0 );
             Showtime showtime = showtimeRepository.findById(bookingRequest.getShowtimeId()).orElseThrow(()->new RuntimeException("Suất chiếu không tồn tại!"));
             ticket.setShowtime(showtime);
             ticketRepository.save(ticket);
@@ -53,7 +59,7 @@ public class BookingService {
             seatShowtimeRepository.save(seatShowtime);
         }
         booking.setTickets(tickets);
-        return bookingRepository.save(bookingRepository.save(booking));
+        return bookingRepository.save(booking);
     }
 
     public List<BookingResponse> getBookings() {

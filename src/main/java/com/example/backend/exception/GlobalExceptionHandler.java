@@ -6,6 +6,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,13 +22,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode((1001));
-        apiResponse.setMessage(exception.getFieldError().getDefaultMessage());
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(MethodArgumentNotValidException ex) {
+        ApiResponse<Map<String, String>> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(1001);
+        apiResponse.setMessage("Validation error");
+
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+        apiResponse.setResult(errors); // result chứa các lỗi theo field
 
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
 
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(AppException appException) {

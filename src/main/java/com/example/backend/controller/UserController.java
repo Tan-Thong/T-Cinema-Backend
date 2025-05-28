@@ -3,8 +3,10 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.request.UserCreationRequest;
 import com.example.backend.dto.response.ApiResponse;
+import com.example.backend.dto.response.BookingResponse;
 import com.example.backend.dto.response.UserResponse;
 import com.example.backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +40,15 @@ public class UserController {
         return apiResponse;
     }
 
+    @GetMapping("/users/{id}/bookings")
+    public ApiResponse<List<BookingResponse>> getMyInfo(@PathVariable("id") int userId) {
+        ApiResponse<List<BookingResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getBookingsByUserId(userId));
+        return apiResponse;
+    }
+
     @PostMapping("/users")
-    public ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest request) {
+    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.createUser(request));
         return apiResponse;
@@ -47,7 +56,7 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<UserResponse> createUser(@PathVariable("id") int userId, @RequestBody UserCreationRequest request) {
+    public ApiResponse<UserResponse> updateUser(@PathVariable("id") int userId, @RequestBody @Valid UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.updateUser(userId, request));
         return apiResponse;

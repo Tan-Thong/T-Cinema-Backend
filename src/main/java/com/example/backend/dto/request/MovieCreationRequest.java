@@ -17,13 +17,15 @@ public class MovieCreationRequest {
     @NotBlank(message = "Tên phim không được bỏ trống!")
     String title;
     String trailerUrl;
+    @NotBlank(message = "Thumnail không được bỏ trống!")
     String thumbnailUrl;
+    @NotBlank(message = "Banner không được bỏ trống!")
     String bannerUrl;
     LocalDate releaseDate;
+    @NotBlank(message = "Thời lượng không được bỏ trống!")
     int duration;
     double rate;
     String country;
     String director;
-    String classification;
     String movieDescription;
 }
