@@ -52,7 +52,7 @@ public class ShowtimeController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<Void> deleteShowtime(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteShowtime(@PathVariable("id") int id) {
         showtimeService.deleteShowtime(id);
         return ResponseEntity.noContent().build();
     }
