@@ -54,8 +54,8 @@ public class MovieController {
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
             @RequestPart(value = "banner", required = false) MultipartFile banner) {
 
-        String thumbnailPath = fileService.saveFile(thumbnail, "thumbnails");
-        String bannerPath = fileService.saveFile(banner, "banners");
+        String thumbnailPath = cloudinaryFileService.uploadFile(thumbnail);
+        String bannerPath = cloudinaryFileService.uploadFile(banner);
 
         request.setThumbnailUrl(thumbnailPath);
         request.setBannerUrl(bannerPath);
@@ -81,8 +81,8 @@ public class MovieController {
             @RequestPart(value = "banner", required = false) MultipartFile banner
     ) {
         // Xử lý file
-        String thumbnailPath = fileService.saveFile(thumbnail, "thumbnails");
-        String bannerPath = fileService.saveFile(banner, "banners");
+        String thumbnailPath = cloudinaryFileService.uploadFile(thumbnail);
+        String bannerPath = cloudinaryFileService.uploadFile(banner);
 
         request.setThumbnailUrl(thumbnailPath);
         request.setBannerUrl(bannerPath);
