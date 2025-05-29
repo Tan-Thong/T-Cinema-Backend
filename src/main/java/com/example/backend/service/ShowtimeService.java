@@ -6,6 +6,7 @@ import com.example.backend.entity.*;
 import com.example.backend.enums.SeatStatus;
 import com.example.backend.mapper.ShowtimeMapper;
 import com.example.backend.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,19 @@ public class ShowtimeService {
         }
 
         return showtimeMapper.toShowtimeResponse(savedShowtime);
+    }
+
+    @Transactional
+    public void deleteShowtime(Long showtimeId) {
+        // Kiểm tra xem suất chiếu có tồn tại không
+        Showtime showtime = showtimeRepository.findById(showtimeId)
+                .orElseThrow(() -> new RuntimeException("Suất chiếu không tồn tại!"));
+
+        // Xoá toàn bộ bản ghi SeatShowtime liên quan
+        seatShowtimeRepository.deleteById_ShowtimeId(showtimeId);
+
+        // Xoá suất chiếu
+        showtimeRepository.deleteById(showtimeId);
     }
 
 

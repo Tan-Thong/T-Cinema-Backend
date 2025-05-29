@@ -6,6 +6,7 @@ import com.example.backend.dto.response.ShowtimeResponse;
 import com.example.backend.service.ShowtimeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,5 +48,12 @@ public class ShowtimeController {
         ShowtimeResponse showtimeResponse = showtimeService.updateShowtime(showtimeId, showtimeRequest);
         apiResponse.setResult(showtimeResponse);
         return apiResponse;
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ResponseEntity<Void> deleteShowtime(@PathVariable Long id) {
+        showtimeService.deleteShowtime(id);
+        return ResponseEntity.noContent().build();
     }
 }
