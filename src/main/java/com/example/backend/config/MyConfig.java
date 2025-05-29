@@ -10,6 +10,6 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:D:/T-Cinema/T-Cinema-Backend/uploads/");
+                .addResourceLocations("file:uploads/");
     }
 }

@@ -5,6 +5,7 @@ import com.example.backend.dto.request.MovieUpdateRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.ShowtimeResponse;
 import com.example.backend.entity.Movie;
+import com.example.backend.service.CloudinaryFileService;
 import com.example.backend.service.FileService;
 import com.example.backend.service.MovieService;
 import com.example.backend.service.ShowtimeService;
@@ -29,6 +30,9 @@ public class MovieController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private CloudinaryFileService cloudinaryFileService;
 
     @GetMapping("")
     public ResponseEntity<List<Movie>> getMovies() {
