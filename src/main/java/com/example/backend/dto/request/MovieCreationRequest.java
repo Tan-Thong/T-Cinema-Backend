@@ -22,7 +22,7 @@ public class MovieCreationRequest {
     @NotBlank(message = "Banner không được bỏ trống!")
     String bannerUrl;
     LocalDate releaseDate;
-    @NotBlank(message = "Thời lượng không được bỏ trống!")
+    @NotNull(message = "Thời lượng không được bỏ trống!")
     int duration;
     double rate;
     String country;
