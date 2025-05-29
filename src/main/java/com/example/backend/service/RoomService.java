@@ -57,10 +57,8 @@ public class RoomService {
                 seat.setRoom(room);
                 if(i < 3) {
                     seat.setSeatType(SeatType.STANDARD);
-                } else if(i < 7) {
-                    seat.setSeatType(SeatType.VIP);
                 } else {
-                    seat.setSeatType(SeatType.COUPLE);
+                    seat.setSeatType(SeatType.VIP);
                 }
                 seatRepository.save(seat);
             }
