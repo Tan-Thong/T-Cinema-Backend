@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface SeatShowtimeRepository extends JpaRepository<SeatShowtime, SeatShowtimeId> {
     List<SeatShowtime> findByIdShowtimeId(int showtimeId);
-    void deleteById_ShowtimeId(Long showtimeId);
+    void deleteById_ShowtimeId(int showtimeId);
 }

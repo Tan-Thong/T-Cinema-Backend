@@ -65,7 +65,7 @@ public class ShowtimeService {
     }
 
     @Transactional
-    public void deleteShowtime(Long showtimeId) {
+    public void deleteShowtime(int showtimeId) {
         // Kiểm tra xem suất chiếu có tồn tại không
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new RuntimeException("Suất chiếu không tồn tại!"));
